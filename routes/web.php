@@ -12,16 +12,13 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
-
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 //email verify route
 Route::get('email/verify/{token}','EmailController@verify')->name('email.verify');
-
-
 
 //Archives route
 Route::resource('/archives','ArchivesController');

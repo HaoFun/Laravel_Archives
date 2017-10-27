@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ArchivesRequest;
 use App\Repositoies\ArchivesRepository;
-use Illuminate\Http\Request;
 use Auth;
 
 class ArchivesController extends Controller
@@ -12,37 +12,21 @@ class ArchivesController extends Controller
 
     public function __construct(ArchivesRepository $archivesRepository)
     {
-        $this->middleware(['auth']);
+        $this->middleware(['auth'])->except('index','show');
         $this->archivesRepository = $archivesRepository;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return 'index';
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('Archives.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(ArchivesRequest $request)
     {
         $data = [
             'title'   => $request->get('title'),
@@ -53,38 +37,19 @@ class ArchivesController extends Controller
         return redirect()->route('archives.show',['id' => $archive->id]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $archive = $this->archivesRepository->ByID($id);
         return view('archives.show',compact('archive'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $archive = $this->archivesRepository->ByID($id);
         return view('archives.edit',compact('archive'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(ArchivesRequest $request, $id)
     {
         $archive = $this->archivesRepository->ByID($id);
         $archive->update([
@@ -94,12 +59,6 @@ class ArchivesController extends Controller
         return view('archives.show',compact('archive'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $archive = $this->archivesRepository->ByID($id);

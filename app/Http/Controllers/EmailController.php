@@ -30,9 +30,10 @@ class EmailController extends Controller
             flash('Email驗證失敗')->error();
             return redirect('/');
         }
-        $user->is_active = true;
-        $user->confirmation_token = str_random(40);  //驗證成功將token更換
-        $user->save();
+        $user->update([
+            'is_active' => true,
+            'confirmation_token' => str_random(40)
+        ]);
         Auth::login($user);
         flash('Email驗證成功!')->success();
         return redirect('/home');

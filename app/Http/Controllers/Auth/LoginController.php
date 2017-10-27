@@ -71,4 +71,16 @@ class LoginController extends Controller
             $credentials, $request->filled('remember')
         );
     }
+
+    //重寫credentials
+    protected function credentials(Request $request)
+    {
+        $field = filter_var($request->get($this->username()), FILTER_VALIDATE_EMAIL)
+            ? $this->username()
+            : 'name';
+        return [
+            $field     => $request->get($this->username()),
+            'password' => $request->get('password')
+        ];
+    }
 }
