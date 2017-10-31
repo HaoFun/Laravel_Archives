@@ -19,7 +19,6 @@ class CreateTopicsTable extends Migration
             $table->text('bio')->nullable();                        //話題--簡介
             $table->unsignedInteger('archives_count')->default(0);  //話題--文章數
             $table->unsignedInteger('followers_count')->default(0); //話題--關注數
-
             $table->timestamps();
         });
     }

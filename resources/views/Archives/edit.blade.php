@@ -20,6 +20,14 @@
                                 @endif
                             </div>
 
+                            <div class="form-group">
+                                <select name="topics[]" class="select2-multiple-topics form-control" style="height: 50px" multiple="multiple">
+                                    @foreach($archive->topics as $topic)
+                                        <option value="{{ $topic->id }}" selected="selected">{{ $topic->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
                             <div class="form-group {{ $errors->has('body')?'has-error':''  }}">
                                 <label for="body">文章內容</label>
                                 <textarea id="container" name="body" style="height: 200px">{!! $archive->body !!}</textarea>
@@ -55,5 +63,44 @@
             imagePopup:false,
             autotypeset:{ indent: true,imageBlockLine: 'center' }
         });
+        $(function () {
+            function formatTopic (topic)
+            {
+                if(topic.name)  //排除undefined
+                {
+                    return "<option value='" + topic.name + "'>" +
+                        topic.name  + "</option>";
+                }
+            }
+            function formatTopicSelection (topic)
+            {
+                return topic.name || topic.text;      //name 後端返回的，如後端沒有查詢到，則使用用戶輸入的text
+            }
+            //引入select2
+            $('.select2-multiple-topics').select2({
+                tags: true,
+                placeholder: '請選擇相關話題',
+                minimumInputLength: 1,
+                ajax: {
+                    url: '/api/topics',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {          //取得輸入的字元  JSON格式{term:"PHP",_type:"query"}
+                        return {
+                            q: params.term,
+                        };
+                    },
+                    processResults: function (data) {   //返回搜尋結果
+                        return {
+                            results: data
+                        };
+                    },
+                    cache: true
+                },
+                templateResult: formatTopic,               //返回搜尋下拉的樣式
+                templateSelection: formatTopicSelection,   //返回搜尋的內容
+                escapeMarkup: function (markup) { return markup; }
+            });
+        })
     </script>
 @endsection

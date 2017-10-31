@@ -41,13 +41,8 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $this->validateLogin($request);
-
-        // If the class is using the ThrottlesLogins trait, we can automatically throttle
-        // the login attempts for this application. We'll key this by the username and
-        // the IP address of the client making these requests into this application.
         if ($this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
-
             return $this->sendLockoutResponse($request);
         }
 
@@ -55,15 +50,12 @@ class LoginController extends Controller
             flash('登入成功!')->success();
             return $this->sendLoginResponse($request);
         }
-
-        // If the login attempt was unsuccessful we will increment the number of attempts
-        // to login and redirect the user back to the login form. Of course, when this
-        // user surpasses their maximum number of attempts they will get locked out.
         $this->incrementLoginAttempts($request);
 
         return $this->sendFailedLoginResponse($request);
     }
 
+    //重寫登入認證，添加Users table is_active欄位，須為true
     protected function attemptLogin(Request $request)
     {
         $credentials = array_merge($this->credentials($request),['is_active'=>true]);
@@ -73,8 +65,10 @@ class LoginController extends Controller
     }
 
     //重寫credentials
+    //使用Email or UserName 登入都可
     protected function credentials(Request $request)
     {
+        //判斷$this->username() 是否為email格式，是的話$field為email，反之$field為name
         $field = filter_var($request->get($this->username()), FILTER_VALIDATE_EMAIL)
             ? $this->username()
             : 'name';

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Topics extends Model
 {
-    protected $fillable = ['name','archives_count','followers_count'];
+    protected $fillable = ['name','bio','archives_count','followers_count'];
 
     public function archives()
     {

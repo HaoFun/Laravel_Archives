@@ -5,7 +5,13 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">{{ $archive->title }}</div>
+                    <div class="panel-heading">
+                        {{ $archive->title }}
+                        @foreach($archive->topics as $topic)
+                            {{--print topic--}}
+                            <span class="topic">{{ $topic->name }}</span>
+                        @endforeach
+                    </div>
                     <div class="panel-body">
                         <div class="panel-body">
                             {!! $archive->body !!}
