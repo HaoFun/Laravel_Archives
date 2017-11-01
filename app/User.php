@@ -28,6 +28,24 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    //判斷傳入的$model->user_id 與用戶ID是否相同
+    public function owns($model)
+    {
+        return $this->id === $model->user_id;
+    }
+
+    //user與archives 一對多關係
+    public function archives()
+    {
+        return $this->hasMany(Archives::class,'user_id');
+    }
+
+    //user與answers 一對多關係
+    public function answers()
+    {
+        return $this->hasMany(Answers::class,'user_id');
+    }
+
     //重寫密碼重置信件發送方法
     public function sendPasswordResetNotification($user)
     {

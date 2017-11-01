@@ -17,7 +17,7 @@ class CreateArchivesTable extends Migration
             $table->increments('id');
             $table->string('title');                               //文章標題
             $table->text('body');                                  //文章內容
-            $table->unsignedInteger('user_id');                    //文章作者
+            $table->unsignedInteger('user_id')->index();           //文章作者
             $table->unsignedInteger('comments_count')->default(0); //文章評論數
             $table->unsignedInteger('followers_count')->default(0);//文章關注數
             $table->unsignedInteger('answers_count')->default(0);  //文章回覆數

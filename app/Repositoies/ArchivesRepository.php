@@ -6,7 +6,7 @@ use App\Topics;
 
 class ArchivesRepository
 {
-    public function create(array $data)
+    public function ArchiveCreate(array $data)
     {
         return Archives::create($data);
     }
@@ -16,12 +16,19 @@ class ArchivesRepository
         return Archives::findOrFail($id);
     }
 
-    public function ArchiveByIDwithTopics($id)
+    public function ArchiveByIDwithTopicsAndAnswers($id)
     {
-        return Archives::where('id',$id)->with('topics')->firstOrFail();
+        return Archives::where('id',$id)->with('topics','answers')->firstOrFail();
     }
 
-    //判斷Topic 是否已存在，不存在就執行FindOrCreateTopic建立對應的Topic，返回array(TopicID)
+    //取所有Archives，is_hidden不為true，依更新時間排序大到小
+    public function ArchivesFeed()
+    {
+        return Archives::published()->latest('updated_at')->with('users')->get();
+    }
+
+    //判斷Topic 是否已存在，不存在就執行FindOrCreateTopic建立對應的Topic，
+    //並執行對應的increment or decrement，返回array(TopicID)
     public function normalizeTopic(array $topics,$type = null)
     {
         return collect($topics)->map(function ($topic) use ($type) {

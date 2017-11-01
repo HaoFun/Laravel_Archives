@@ -35,7 +35,6 @@
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary form-control">確認</button>
                             </div>
-
                         </form>
                     </div>
                 </div>

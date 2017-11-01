@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/','ArchivesController@index');
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -22,3 +20,6 @@ Route::get('email/verify/{token}','EmailController@verify')->name('email.verify'
 
 //Archives route
 Route::resource('/archives','ArchivesController');
+
+//Answers route
+Route::post('/archives/{archive}/answer','AnswersController@store')->name('answer.store');

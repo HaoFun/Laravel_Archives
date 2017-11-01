@@ -18,7 +18,8 @@ class ArchivesController extends Controller
 
     public function index()
     {
-        return 'index';
+        $archives = $this->archivesRepository->ArchivesFeed();
+        return view('Archives.index',compact('archives'));
     }
 
     public function create()
@@ -33,33 +34,40 @@ class ArchivesController extends Controller
             'body'    => $request->get('body'),
             'user_id' => Auth::user()->id
         ];
-        $archive = $this->archivesRepository->create($data);
+        $archive = $this->archivesRepository->ArchiveCreate($data);
         //topics 大於0 才進行 attach 多對多附加
         if(count($request->get('topics')) > 0)
         {
             $topics = $this->archivesRepository->normalizeTopic($request->get('topics'));
             $archive->topics()->attach($topics);
         }
+        flash()->success("新增文章---{$archive->title}成功");
         return redirect()->route('archives.show',['id' => $archive->id]);
     }
 
     public function show($id)
     {
-        $archive = $this->archivesRepository->ArchiveByIDwithTopics($id);
+        $archive = $this->archivesRepository->ArchiveByIDwithTopicsAndAnswers($id);
         return view('archives.show',compact('archive'));
     }
 
     public function edit($id)
     {
         $archive = $this->archivesRepository->ArchiveByID($id);
-        return view('archives.edit',compact('archive'));
+        //判斷編輯者是否為文章發表人，具有編輯權限
+        if(Auth::user()->owns($archive))
+        {
+            return view('archives.edit',compact('archive'));
+        }
+        alert()->error('您沒有編輯權限!')->autoclose(1000);
+        return back();
     }
 
     public function update(ArchivesRequest $request, $id)
     {
         $archive = $this->archivesRepository->ArchiveByID($id);
         $before_topics = $archive->topics->pluck('id')->toArray();
-        //更新topics大於0
+        //topics大於0，動作
         if(count($request->get('topics')) > 0)
         {
             $after_topics = $this->archivesRepository->normalizeTopic($request->get('topics'),'update');
@@ -67,15 +75,15 @@ class ArchivesController extends Controller
             //，只會increment topics table 中不存在的紀錄，創建該topic並archives_count設為1
 
             //第一種情況為原有topics有移除的動作，這邊先decrement 這些 舊有topics
-            if($diff_topics = array_diff($before_topics,$after_topics))
+            if($before_diff_topics = array_diff($before_topics,$after_topics))
             {
-                $this->archivesRepository->decrementTopic($diff_topics);
+                $this->archivesRepository->decrementTopic($before_diff_topics);
             }
             //第二種情況為除了原有的topics 還有新增的topics(這邊指的 新增topics是已經存在於topics table紀錄中，不是create出來的)
             //，這邊針對新增的topics進行increment
-            if($diff_topics = array_diff($after_topics,$before_topics))
+            if($after_diff_topics = array_diff($after_topics,$before_topics))
             {
-                $this->archivesRepository->incrementTopic($diff_topics);
+                $this->archivesRepository->incrementTopic($after_diff_topics);
             }
             $archive->update([
                 'title' => $request->get('title'),
@@ -90,16 +98,19 @@ class ArchivesController extends Controller
                 'title' => $request->get('title'),
                 'body'  => $request->get('body')
             ]);
+            //如更新內容中 沒有包含任何topic，將原有的topics decrement
             $this->archivesRepository->decrementTopic($before_topics);
             $archive->topics()->sync(array());
         }
-        return view('archives.show',compact('archive'));
+        flash()->success("編輯{$archive->title}成功");
+        return redirect()->route('archives.show',['id' => $archive->id]);
     }
 
     public function destroy($id)
     {
         $archive = $this->archivesRepository->ArchiveByID($id);
-        if($archive !== null)
+        //判斷編輯者是否為文章發表人，具有刪除權限
+        if(Auth::user()->owns($archive))
         {
             //對Archive中有使用的topic--decrment Topic
             $this->archivesRepository->decrementTopic($archive->topics);
@@ -108,7 +119,7 @@ class ArchivesController extends Controller
             $archive->delete();
             return action('ArchivesController@index');
         }
-        flash('刪除失敗，請重試')->error();
+        alert()->error('刪除失敗，請重試')->autoclose(1000);
         return back();
     }
 }

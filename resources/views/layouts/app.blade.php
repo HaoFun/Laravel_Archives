@@ -40,7 +40,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @auth
-                            <li><a href="{{ route('archives.create') }}">發佈文章</a></li>
+                            <li><a href="{{ url('/') }}">文章列表</a></li>
                         @endauth
                         @guest
                             <li><a href="{{ route('login') }}">登入</a></li>
@@ -75,6 +75,7 @@
     </div>
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}"></script>
+    @include('sweet::alert')
     @yield('js')
     <script>
         $(document).ready(function () {

@@ -170,6 +170,7 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,  //laravel ide helper
         Laracasts\Flash\FlashServiceProvider::class,                //flash
         Overtrue\LaravelUEditor\UEditorServiceProvider::class,      //Ueditor
+        UxWeb\SweetAlert\SweetAlertServiceProvider::class,          //SweetAlert
 
         /*
          * Application Service Providers...
@@ -228,5 +229,6 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Alert' => UxWeb\SweetAlert\SweetAlert::class,
     ],
 ];
