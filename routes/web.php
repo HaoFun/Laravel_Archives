@@ -23,3 +23,4 @@ Route::resource('/archives','ArchivesController');
 
 //Answers route
 Route::post('/archives/{archive}/answer','AnswersController@store')->name('answer.store');
+Route::get('archives/{archive}/follow','ArchivesFollowController@follow')->name('archive.follow');

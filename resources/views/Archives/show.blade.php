@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-8 col-md-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         {{ $archive->title }}
@@ -12,11 +12,11 @@
                             <a class="topic pull-right" href="/topic/{{ $topic->id }}">{{ $topic->name }}</a>
                         @endforeach
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body" style="min-height: 170px">
                         {!! $archive->body !!}
-                        <div class="actions pull-right">
+                        <div class="actions pull-right form-inline">
                             @if(Auth::check() && Auth::user()->owns($archive))
-                                <a style="margin-right: 5px" href="{{ route('archives.edit',$archive->id) }}" type="button" class="btn btn-primary pull-right">編輯</a>
+                                <a style="margin-right: 5px;" href="{{ route('archives.edit',$archive->id) }}" type="button" class="btn btn-primary pull-right">編輯</a>
                                 <form action="{{ route('archives.destroy',$archive->id) }}" method="post">
                                     {{ csrf_field() }}
                                     {{ method_field('DELETE') }}
@@ -27,7 +27,21 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-8 col-md-offset-2">
+
+            <div class="col-md-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading text-center">
+                        <h3 >{{ $archive->followers_count }}</h3>
+                        <span >關注者</span>
+                    </div>
+                    <div class="panel-body text-center">
+                        <a href="{{ route('archive.follow',$archive->id) }}" class="btn btn-success btn-block">關注文章</a>
+                        <a href="#editor" class="btn btn-default btn-block block">撰寫回覆</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8 col-md-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         {{ $archive->answers_count }}個回覆
@@ -59,6 +73,8 @@
                             </div>
                             <button class="btn btn-primary pull-right" type="submit">確　認</button>
                         </form>
+                        @else
+                        <a href="{{ route('login') }}" class="btn btn-primary form-control">請先登入再進行回覆</a>
                         @endauth
                     </div>
                 </div>

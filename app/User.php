@@ -46,6 +46,18 @@ class User extends Authenticatable
         return $this->hasMany(Answers::class,'user_id');
     }
 
+    //Follow Model
+    public function follows()
+    {
+        return $this->belongsToMany(Archives::class,'user_archives','user_id','archive_id')->withTimestamps();
+    }
+
+    //Follow toggle function
+    public function followThis($archive)
+    {
+        return $this->follows()->toggle($archive);
+    }
+
     //重寫密碼重置信件發送方法
     public function sendPasswordResetNotification($user)
     {
