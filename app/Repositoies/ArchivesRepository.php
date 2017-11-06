@@ -58,6 +58,7 @@ class ArchivesRepository
             case 1:
                 //為update時，且有新的topic需創建
                 $query->increment('archives_count');
+                return (int)$query->id;
                 break;
             case 10:
                 //沒有新的topic需創建，針對使用 舊有topic increment 指定欄位增量

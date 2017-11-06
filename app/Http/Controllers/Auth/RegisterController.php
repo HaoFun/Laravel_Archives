@@ -66,6 +66,7 @@ class RegisterController extends Controller
         $user =  User::create([
             'name'     => $data['name'],
             'email'    => $data['email'],
+            'api_token'=> str_random(60),
             'avatar'   => '/images/avatar/default.jpg',  //設置默認註冊頭像
             'confirmation_token'  => str_random(40),
             'password' => bcrypt($data['password']),

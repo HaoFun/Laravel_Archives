@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','avatar','confirmation_token','is_active'
+        'name', 'email', 'api_token', 'password','avatar','confirmation_token','is_active'
     ];
 
     /**
@@ -52,10 +52,16 @@ class User extends Authenticatable
         return $this->belongsToMany(Archives::class,'user_archives','user_id','archive_id')->withTimestamps();
     }
 
-    //Follow toggle function
+    //Follow toggle function，toggle方法用於判斷資料庫裡是否有相同的內容，如果有刪除，否則創建
     public function followThis($archive)
     {
         return $this->follows()->toggle($archive);
+    }
+
+    //確認用戶是否有關注文章
+    public function followed($archive)
+    {
+        return $this->follows()->where('archive_id',$archive)->count();
     }
 
     //重寫密碼重置信件發送方法

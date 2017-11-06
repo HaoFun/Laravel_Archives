@@ -1615,6 +1615,69 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0&bustCache!./resources/assets/js/components/ArchiveFollow.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['archive', 'check'],
+    mounted: function mounted() {
+        var _this = this;
+
+        if (this.check) {
+            axios.post('/api/archive/follower', { 'archive': this.archive }).then(function (response) {
+                _this.followed = response.data.followed;
+                _this.followers_count = response.data.followers_count;
+            });
+        }
+    },
+    data: function data() {
+        return {
+            followed: false,
+            followers_count: 0
+        };
+    },
+
+    computed: {
+        text: function text() {
+            return this.followed ? '取消關注' : '關注文章';
+        }
+    },
+    methods: {
+        follow: function follow() {
+            var _this2 = this;
+
+            if (this.check) {
+                axios.post('/api/archive/follow', { 'archive': this.archive }).then(function (response) {
+                    _this2.followed = response.data.followed;
+                    _this2.followers_count = response.data.followers_count;
+                });
+            }
+        }
+    }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0&bustCache!./resources/assets/js/components/ExampleComponent.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -32010,6 +32073,53 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-ce1e2b34\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0&bustCache!./resources/assets/js/components/ArchiveFollow.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "panel panel-default" }, [
+    _c("div", { staticClass: "panel-heading text-center" }, [
+      _c("h3", { domProps: { textContent: _vm._s(_vm.followers_count) } }),
+      _vm._v(" "),
+      _c("span", [_vm._v("關注數")])
+    ]),
+    _vm._v(" "),
+    this.check
+      ? _c("div", { staticClass: "panel-body text-center" }, [
+          _c("button", {
+            staticClass: "btn btn-block",
+            class: [_vm.followed ? "btn-danger" : "btn-success"],
+            domProps: { textContent: _vm._s(_vm.text) },
+            on: { click: _vm.follow }
+          }),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-default btn-block block",
+              attrs: { id: "write", href: "#editor" }
+            },
+            [_vm._v("撰寫回覆")]
+          )
+        ])
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-ce1e2b34", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue/dist/vue.common.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -42658,7 +42768,7 @@ window.Vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
  */
 
 Vue.component('example-component', __webpack_require__("./resources/assets/js/components/ExampleComponent.vue"));
-
+Vue.component('archive-follow', __webpack_require__("./resources/assets/js/components/ArchiveFollow.vue"));
 var app = new Vue({
   el: '#app'
 });
@@ -42678,11 +42788,11 @@ window._ = __webpack_require__("./node_modules/lodash/lodash.js");
  */
 
 try {
-  window.$ = window.jQuery = __webpack_require__("./node_modules/jquery/dist/jquery.js");
+    window.$ = window.jQuery = __webpack_require__("./node_modules/jquery/dist/jquery.js");
 
-  __webpack_require__("./node_modules/bootstrap-sass/assets/javascripts/bootstrap.js");
-  __webpack_require__("./resources/assets/js/select2.min.js");
-  __webpack_require__("./resources/assets/js/sweetalert.min.js");
+    __webpack_require__("./node_modules/bootstrap-sass/assets/javascripts/bootstrap.js");
+    __webpack_require__("./resources/assets/js/select2.min.js");
+    __webpack_require__("./resources/assets/js/sweetalert.min.js");
 } catch (e) {}
 
 /**
@@ -42702,11 +42812,18 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  */
 
 var token = document.head.querySelector('meta[name="csrf-token"]');
-
 if (token) {
-  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
-  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+}
+
+var api_token = document.head.querySelector('meta[name="api_token"]'); //新增 API TOKEN
+if (api_token) {
+    //新增 API TOKEN
+    window.axios.defaults.headers.common['Authorization'] = api_token.content;
+} else {
+    console.error('API Token Not found.');
 }
 
 /**
@@ -42723,6 +42840,55 @@ if (token) {
 //     broadcaster: 'pusher',
 //     key: 'your-pusher-key'
 // });
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/ArchiveFollow.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0&bustCache!./resources/assets/js/components/ArchiveFollow.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-ce1e2b34\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0&bustCache!./resources/assets/js/components/ArchiveFollow.vue")
+/* template functional */
+  var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\ArchiveFollow.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-ce1e2b34", Component.options)
+  } else {
+    hotAPI.reload("data-v-ce1e2b34", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
 
 /***/ }),
 

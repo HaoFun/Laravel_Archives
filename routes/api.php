@@ -17,7 +17,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('api')->get('/topics', function (Request $request) {
-    $topics = \App\Topics::select(['id','name'])->where('name','LIKE','%'.$request->query('q').'%')->get();
-    return $topics;
-});
+Route::middleware('api')->get('/topics','TopicsController@getTopics');
+
+//ArchiveFollowButton follower function
+Route::middleware('auth:api')->post('/archive/follower','ArchivesFollowController@follower');
+
+//ArchiveFollowButton follow function
+Route::middleware('auth:api')->post('/archive/follow','ArchivesFollowController@followThis');

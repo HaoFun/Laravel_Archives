@@ -27,10 +27,15 @@ class Archives extends Model
         return $this->hasMany(Answers::class,'archive_id');
     }
 
+    //archive與user 多對多關係
+    public function followers()
+    {
+        return $this->belongsToMany(User::class,'user_archives','archive_id','user_id')->withTimestamps();
+    }
+
     //scope方法 判斷archive is_hidden 欄位是否為false
     public function scopePublished($query)
     {
         return $query->where('is_hidden',false);
     }
-
 }

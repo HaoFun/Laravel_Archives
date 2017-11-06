@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-1">
+            <div class="col-md-9 col-sm-9">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         {{ $archive->title }}
@@ -28,20 +28,11 @@
                 </div>
             </div>
 
-            <div class="col-md-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading text-center">
-                        <h3 >{{ $archive->followers_count }}</h3>
-                        <span >關注者</span>
-                    </div>
-                    <div class="panel-body text-center">
-                        <a href="{{ route('archive.follow',$archive->id) }}" class="btn btn-success btn-block">關注文章</a>
-                        <a href="#editor" class="btn btn-default btn-block block">撰寫回覆</a>
-                    </div>
-                </div>
+            <div class="col-md-3 col-sm-3">
+                <archive-follow :check="{{ Auth::check() ? '1':'0' }}" :archive="{{ $archive->id }}"></archive-follow>
             </div>
 
-            <div class="col-md-8 col-md-offset-1">
+            <div class="col-md-9 col-sm-9">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         {{ $archive->answers_count }}個回覆
@@ -64,7 +55,7 @@
                             {!! csrf_field() !!}
                             <div class="form-group {{ $errors->has('body')?'has-error':'' }}">
                                 <label for="body">回覆內容</label>
-                                <textarea id="container" name="body" style="height: 120px">{!! old('body') !!}</textarea>
+                                <textarea id="container" name="body" class="body" style="height: 120px">{!! old('body') !!}</textarea>
                                 @if ($errors->has('body'))
                                     <span class="help-block">
                                     <strong>{!! $errors->first('body') !!}</strong>
@@ -85,17 +76,25 @@
 @section('js')
     @include('vendor.ueditor.assets')
     <script type="text/javascript">
-        //        實例化編輯器
-        var ue = UE.getEditor('container', {
-            toolbars: [
-                ['bold', 'italic', 'underline', 'strikethrough', 'blockquote', 'insertunorderedlist', 'insertorderedlist', 'justifyleft','justifycenter', 'justifyright',  'link', 'insertimage', 'fullscreen']
-            ],
-            elementPathEnabled: false,
-            enableContextMenu: false,
-            autoClearEmptyNode:true,
-            wordCount:false,
-            imagePopup:false,
-            autotypeset:{ indent: true,imageBlockLine: 'center' }
+        $(function () {
+            //        實例化編輯器
+            var ue = UE.getEditor('container', {
+                toolbars: [
+                    ['bold', 'italic', 'underline', 'strikethrough', 'blockquote', 'insertunorderedlist', 'insertorderedlist', 'justifyleft','justifycenter', 'justifyright',  'link', 'insertimage', 'fullscreen']
+                ],
+                elementPathEnabled: false,
+                enableContextMenu: false,
+                autoClearEmptyNode:true,
+                wordCount:false,
+                imagePopup:false,
+                autotypeset:{ indent: true,imageBlockLine: 'center' }
+            });
+
+            $('#write').click(function () {
+                var element = document.getElementById("container");
+                ue.focus(true);
+                element.scrollIntoView(true);
+            });
         });
     </script>
 @endsection
