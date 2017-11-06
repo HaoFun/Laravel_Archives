@@ -35,6 +35,8 @@ class ArchivesController extends Controller
             'user_id' => Auth::user()->id
         ];
         $archive = $this->archivesRepository->ArchiveCreate($data);
+        //add User table archives_count
+        $archive->users->increment('archives_count');
         //topics 大於0 才進行 attach 多對多附加
         if(count($request->get('topics')) > 0)
         {
@@ -112,12 +114,14 @@ class ArchivesController extends Controller
         //判斷編輯者是否為文章發表人，具有刪除權限
         if(Auth::user()->owns($archive))
         {
+            //sub user table archives_count
+            $archive->users->decrement('archives_count');
             //對Archive中有使用的topic--decrment Topic
-            $this->archivesRepository->decrementTopic($archive->topics);
+            $this->archivesRepository->decrementTopic($archive->topics->toArray());
             //detach() 解除多對多關係
             $archive->topics()->detach();
             $archive->delete();
-            return action('ArchivesController@index');
+            return redirect()->action('ArchivesController@index');
         }
         alert()->error('刪除失敗，請重試')->autoclose(1000);
         return back();

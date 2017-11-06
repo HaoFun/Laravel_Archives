@@ -33,7 +33,21 @@ a.topic:hover
     display: -webkit-inline-box;
     display: -ms-inline-flexbox;
     display: inline-flex;
-}body.stop-scrolling {
+}
+
+
+.user-statics , .user-actions
+{
+    margin-top: 20px;
+}
+
+.user-statics
+{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+body.stop-scrolling {
   height: 100%;
   overflow: hidden; }
 

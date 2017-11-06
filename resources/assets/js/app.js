@@ -17,6 +17,7 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('archive-follow', require('./components/ArchiveFollow.vue'));
+Vue.component('user-follow', require('./components/UserFollow.vue'));
 const app = new Vue({
     el: '#app'
 });

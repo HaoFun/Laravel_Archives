@@ -1,7 +1,7 @@
 <template>
     <div class="panel panel-default">
         <div class="panel-heading text-center">
-            <h3 v-text="followers_count"></h3>
+            <h4 v-text="followers_count"></h4>
             <span >關注數</span>
         </div>
         <div class="panel-body text-center" v-if="this.check">

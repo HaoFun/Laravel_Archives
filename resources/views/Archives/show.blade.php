@@ -58,15 +58,38 @@
                                 <textarea id="container" name="body" class="body" style="height: 120px">{!! old('body') !!}</textarea>
                                 @if ($errors->has('body'))
                                     <span class="help-block">
-                                    <strong>{!! $errors->first('body') !!}</strong>
-                                </span>
+                                        <strong>{!! $errors->first('body') !!}</strong>
+                                    </span>
                                 @endif
                             </div>
                             <button class="btn btn-primary pull-right" type="submit">確　認</button>
                         </form>
                         @else
-                        <a href="{{ route('login') }}" class="btn btn-primary form-control">請先登入再進行回覆</a>
+                            <a href="{{ route('login') }}" class="btn btn-primary form-control">請先登入再進行回覆</a>
                         @endauth
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-sm-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading text-center">
+                        <span>關於作者</span>
+                    </div>
+                    <div class="panel-body text-center">
+                        <div class="media">
+                            <div class="media-middle">
+                                <a href="#">
+                                    <img width="100" height="60" src="{{ $archive->users->avatar }}" alt="{{ $archive->users->name }}">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">
+                                    <a href="#">{{ $archive->users->name }}</a>
+                                </h4>
+                            </div>
+                            <user-follow :check="{{ Auth::check() ? '1':'0' }}" :user="{{ $archive->user_id }}"></user-follow>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -19,8 +19,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::middleware('api')->get('/topics','TopicsController@getTopics');
 
-//ArchiveFollowButton follower function
+//Archive follow route
 Route::middleware('auth:api')->post('/archive/follower','ArchivesFollowController@follower');
-
-//ArchiveFollowButton follow function
 Route::middleware('auth:api')->post('/archive/follow','ArchivesFollowController@followThis');
+
+
+//User follow route
+Route::middleware('auth:api')->post('/user/followers','FollowersController@index');
+Route::middleware('auth:api')->post('/user/follow','FollowersController@follow');

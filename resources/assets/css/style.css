@@ -32,3 +32,14 @@ a.topic:hover
 {
     display: inline-flex;
 }
+
+
+.user-statics , .user-actions
+{
+    margin-top: 20px;
+}
+
+.user-statics
+{
+    display: flex;
+}

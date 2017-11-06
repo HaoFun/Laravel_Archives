@@ -22,6 +22,8 @@ class AnswersController extends Controller
             'archive_id' => $archive,
             'body'       => $request->get('body')
         ]);
+        //store increment user table answers_count
+        $answer->users->increment('answers_count');
         if($answer)
         {
             $answer->archives()->increment('answers_count');

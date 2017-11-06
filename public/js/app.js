@@ -1708,6 +1708,83 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0&bustCache!./resources/assets/js/components/UserFollow.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['user', 'check'],
+    mounted: function mounted() {
+        var _this = this;
+
+        if (this.check) {
+            axios.post('/api/user/followers', { 'user': this.user }).then(function (response) {
+                _this.followed = response.data.followed;
+                _this.archives_count = response.data.archives_count;
+                _this.answers_count = response.data.answers_count;
+                _this.followers_count = response.data.followers_count;
+            });
+        }
+    },
+    data: function data() {
+        return {
+            followed: false,
+            archives_count: 0,
+            answers_count: 0,
+            followers_count: 0
+        };
+    },
+
+    computed: {
+        text: function text() {
+            return this.followed ? '取消關注' : '關注作者';
+        }
+    },
+    methods: {
+        follow: function follow() {
+            var _this2 = this;
+
+            if (this.check) {
+                axios.post('/api/user/follow', { 'user': this.user }).then(function (response) {
+                    _this2.followed = response.data.followed;
+                    _this2.archives_count = response.data.archives_count;
+                    _this2.answers_count = response.data.answers_count;
+                    _this2.followers_count = response.data.followers_count;
+                });
+            }
+        }
+    }
+});
+
+/***/ }),
+
 /***/ "./node_modules/bootstrap-sass/assets/javascripts/bootstrap.js":
 /***/ (function(module, exports) {
 
@@ -32029,6 +32106,86 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-1e030b99\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0&bustCache!./resources/assets/js/components/UserFollow.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return this.check
+    ? _c("div", [
+        _c("div", { staticClass: "user-statics col-md-12" }, [
+          _c(
+            "div",
+            { staticClass: "statics-item　col-md-4 col-sm-4 col-xs-4" },
+            [
+              _c("div", { staticClass: "statics-text" }, [_vm._v("文章")]),
+              _vm._v(" "),
+              _c("div", {
+                staticClass: "statics-count",
+                domProps: { textContent: _vm._s(this.archives_count) }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "statics-item col-md-4 col-sm-4 col-xs-4" },
+            [
+              _c("div", { staticClass: "statics-text" }, [_vm._v("回覆")]),
+              _vm._v(" "),
+              _c("div", {
+                staticClass: "statics-count",
+                domProps: { textContent: _vm._s(this.answers_count) }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "statics-item col-md-4 col-sm-4 col-xs-4" },
+            [
+              _c("div", { staticClass: "statics-text" }, [_vm._v("關注")]),
+              _vm._v(" "),
+              _c("div", {
+                staticClass: "statics-count",
+                domProps: { textContent: _vm._s(this.followers_count) }
+              })
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("button", {
+          staticClass: "btn btn-block",
+          class: [_vm.followed ? "btn-danger" : "btn-success"],
+          domProps: { textContent: _vm._s(_vm.text) },
+          on: { click: _vm.follow }
+        }),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-default btn-block block",
+            attrs: { id: "write", href: "#editor" }
+          },
+          [_vm._v("發送訊息")]
+        )
+      ])
+    : _vm._e()
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-1e030b99", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-51fccbb0\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0&bustCache!./resources/assets/js/components/ExampleComponent.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -32082,7 +32239,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "panel panel-default" }, [
     _c("div", { staticClass: "panel-heading text-center" }, [
-      _c("h3", { domProps: { textContent: _vm._s(_vm.followers_count) } }),
+      _c("h4", { domProps: { textContent: _vm._s(_vm.followers_count) } }),
       _vm._v(" "),
       _c("span", [_vm._v("關注數")])
     ]),
@@ -42769,6 +42926,7 @@ window.Vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
 
 Vue.component('example-component', __webpack_require__("./resources/assets/js/components/ExampleComponent.vue"));
 Vue.component('archive-follow', __webpack_require__("./resources/assets/js/components/ArchiveFollow.vue"));
+Vue.component('user-follow', __webpack_require__("./resources/assets/js/components/UserFollow.vue"));
 var app = new Vue({
   el: '#app'
 });
@@ -42930,6 +43088,55 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-51fccbb0", Component.options)
   } else {
     hotAPI.reload("data-v-51fccbb0", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/UserFollow.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\"]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0&bustCache!./resources/assets/js/components/UserFollow.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-1e030b99\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0&bustCache!./resources/assets/js/components/UserFollow.vue")
+/* template functional */
+  var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\UserFollow.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1e030b99", Component.options)
+  } else {
+    hotAPI.reload("data-v-1e030b99", Component.options)
 ' + '  }
   module.hot.dispose(function (data) {
     disposed = true

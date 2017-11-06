@@ -64,6 +64,24 @@ class User extends Authenticatable
         return $this->follows()->where('archive_id',$archive)->count();
     }
 
+    //User 與 User 多對多關係 (foreignPivoKey follower_id 彼此關注)
+    public function followers()
+    {
+       return $this->belongsToMany(self::class,'followers','follower_id','followed_id')->withTimestamps();
+    }
+
+    //User 與 User 多對多關係 (foreignPivoKey followed_id 彼此關注)
+    public function followersUser()
+    {
+        return $this->belongsToMany(self::class,'followers','followed_id','follower_id')->withTimestamps();
+    }
+
+    //User 與 User 多對多關係 toggle方法
+    public function followThisUser($user)
+    {
+        return $this->followers()->toggle($user);
+    }
+
     //重寫密碼重置信件發送方法
     public function sendPasswordResetNotification($user)
     {

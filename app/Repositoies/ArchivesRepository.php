@@ -56,12 +56,12 @@ class ArchivesRepository
                 return (int)$newTopic->id;
                 break;
             case 1:
-                //為update時，且有新的topic需創建
+                //為update時，沒有新的topic需創建，針對使用舊有topic increment指定欄位增量
                 $query->increment('archives_count');
                 return (int)$query->id;
                 break;
             case 10:
-                //沒有新的topic需創建，針對使用 舊有topic increment 指定欄位增量
+                //為update時，且有新的topic需創建
                 $newTopic = Topics::create(['name' => $topic,'bio' => $topic,'archives_count' => 0]);
                 return (int)$newTopic->id;
                 break;
@@ -75,7 +75,7 @@ class ArchivesRepository
     public function decrementTopic(array $topics)
     {
         collect($topics)->map(function ($topic){
-            $this->TopicByID($topic)->decrement('archives_count');
+            $this->TopicByID($topic['id'])->decrement('archives_count');
         });
     }
 
